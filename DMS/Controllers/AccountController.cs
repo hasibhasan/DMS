@@ -66,6 +66,21 @@ namespace DMS.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            //Create Basic Two Roles when firsts setup
+            var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            var rolesToBeCreated = new List<string> { "Administrator", "User" };
+            foreach (var roles in rolesToBeCreated)
+            {
+                if (!roleManager.RoleExists(roles))
+                {
+                    var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                    role.Name = roles;
+                    roleManager.Create(role);
+                    ViewBag.Role = "Quick Installation: First Time Role Created";
+                }
+
+            }                  
+
             return View();
         }
 
@@ -78,8 +93,9 @@ namespace DMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser() { UserName = model.UserName, Address= model.Address, Email= model.Address, Phone= model.Phone, NID= model.NID, Gender=model.Gender };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                UserManager.AddToRole(user.Id, "User");
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);

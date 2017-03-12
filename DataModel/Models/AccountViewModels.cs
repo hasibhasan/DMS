@@ -59,5 +59,26 @@ namespace DMS.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Gender")]
+        public string Gender { get; set; }
+
+        [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+
+        [Required]
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
+
+        
+        [Display(Name = "NID")]
+        public string NID { get; set; }
     }
 }

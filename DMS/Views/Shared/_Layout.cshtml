@@ -61,22 +61,11 @@
         </footer>
     </div>
 
-    <!-- basic scripts -->
-    <!--[if !IE]> -->
-    <script type="text/javascript">
-        window.jQuery || document.write("<script src='~/Scripts/js/jquery.js'>" + "<" + "/script>");
-    </script>
 
-    <!-- <![endif]-->
-    <!--[if IE]>
-    <script type="text/javascript">
-     window.jQuery || document.write("<script src='~/Scripts/js/jquery1x.js'>"+"<"+"/script>");
-    </script>
-    <![endif]-->
+    <script src="~/Scripts/js/jquery.js"></script>
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='~/Scripts/js/jquery.mobile.custom.js'>" + "<" + "/script>");
-    </script>
-    <script src="../assets/js/bootstrap.js"></script>
+    </script>   
 
     <!-- page specific plugin scripts -->
     @Scripts.Render("~/bundles/bootstrap")

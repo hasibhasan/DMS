@@ -19904,3 +19904,11 @@ input.typeahead.scrollable ~ .tt-dropdown-menu {
     display: none !important;
   }
 }
+.dropdownIssueFixforForm{
+    font-size: 13px;
+padding-left: 11px;
+padding-right: 11px;
+padding-bottom: 4px;
+margin-bottom: 1px;
+margin-top: 1px;
+}
