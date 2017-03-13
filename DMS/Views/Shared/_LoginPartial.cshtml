@@ -1,23 +1,31 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="~/Content/avatars/user.jpg" alt="Jason's Photo" />
-								<span class="user-info">
-                                    <small>Welcome,</small>
-                                    User									
-								</span>
+        if(User.IsInRole("Administrator"))
+        {
+            <li>@Html.ActionLink("Admin Dashboard", "Index", "Admin")</li>
+        }
+        else if (User.IsInRole("User"))
+        {
+            <li>@Html.ActionLink("User Dashboard", "Index", "User")</li>
+        }
+        
+        <li>
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                <img class="nav-user-photo" src="~/Content/avatars/user.jpg" alt="Jason's Photo" />
+                <span class="user-info">
+                    <small>Welcome,</small>
+                    @User.Identity.GetUserName()
+                </span>
 
-								<i class="ace-icon fa fa-caret-down"></i>
-							</a>
-   
-    
-       
-            
+                <i class="ace-icon fa fa-caret-down"></i>
+            </a>
+
             <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                <li>                    
-                     @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
-                    
+
+                <li>
+                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+
                 </li>
 
                 <li>
@@ -31,25 +39,27 @@
 
                 <li>
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-left dropdownIssueFixforForm" }))
-                    {
-                    @Html.AntiForgeryToken()
-                    <a href="javascript:document.getElementById('logoutForm').submit()">
-                        <i class="ace-icon fa fa-power-off"></i>
-                        Logout
-                    </a>
-                    }
+            {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()">
+                <i class="ace-icon fa fa-power-off"></i>
+                Logout
+            </a>
+            }
                 </li>
             </ul>
+        </li>
 
-            
-       
-        
+
+
 
 }
 else
 {
-    <ul class="nav  ace-nav">
+    
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    
 }
