@@ -49,6 +49,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,12 +60,66 @@
   <ItemGroup>
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DB\AspNetRole.cs">
+      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\AspNetUser.cs">
+      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\DMSDataEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DMSDataEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\DMSDataEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\DMSDataEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\Permission.cs">
+      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\PermissionRole.cs">
+      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\PermissionUser.cs">
+      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="Models\DB\DMSDataEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DMSDataEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\DB\DMSDataEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
+      <LastGenOutput>DMSDataEntities.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Models\DB\DMSDataEntities.edmx.diagram">
+      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
+    </None>
+    <None Include="Models\DB\DMSDataEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
+      <LastGenOutput>DMSDataEntities.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\EntityManager\" />
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

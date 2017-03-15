@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="NID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PermissionRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="GrantPermisiion" Type="bit" Nullable="false" />
+          <Property Name="PermissionsId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EvidenceRead" Type="bit" Nullable="false" />
+          <Property Name="EvidenceWrite" Type="bit" Nullable="false" />
+          <Property Name="EvidenceUpdate" Type="bit" Nullable="false" />
+          <Property Name="EvidenceDelete" Type="bit" Nullable="false" />
+          <Property Name="EvidenceDownload" Type="bit" Nullable="false" />
+          <Property Name="UserView" Type="bit" Nullable="false" />
+          <Property Name="UserEdit" Type="bit" Nullable="false" />
+          <Property Name="UserDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PermissionUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="GrantPermission" Type="bit" Nullable="false" />
+          <Property Name="PermissionId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PermissionRoles_Permissions">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="PermissionRoles" Type="Self.PermissionRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PermissionRoles_Permissions1">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="PermissionRoles" Type="Self.PermissionRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionRoles">
+              <PropertyRef Name="PermissionsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PermissionUser_Permissions">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PermissionUser_Permissions1">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionUser">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DDataModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PermissionRoles" EntityType="Self.PermissionRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PermissionUser" EntityType="Self.PermissionUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PermissionRoles_Permissions" Association="Self.FK_PermissionRoles_Permissions">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="PermissionRoles" EntitySet="PermissionRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PermissionRoles_Permissions1" Association="Self.FK_PermissionRoles_Permissions1">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionRoles" EntitySet="PermissionRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PermissionUser_Permissions" Association="Self.FK_PermissionUser_Permissions">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="PermissionUser" EntitySet="PermissionUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PermissionUser_Permissions1" Association="Self.FK_PermissionUser_Permissions1">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionUser" EntitySet="PermissionUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PermissionRoles" Relationship="Self.FK_PermissionRoles_Permissions" FromRole="AspNetRoles" ToRole="PermissionRoles" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PermissionUsers" Relationship="Self.FK_PermissionUser_Permissions" FromRole="AspNetUsers" ToRole="PermissionUser" />
+        </EntityType>
+        <EntityType Name="PermissionRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GrantPermisiion" Type="Boolean" Nullable="false" />
+          <Property Name="PermissionsId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="AspNetRole" Relationship="Self.FK_PermissionRoles_Permissions" FromRole="PermissionRoles" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_PermissionRoles_Permissions1" FromRole="PermissionRoles" ToRole="Permissions" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EvidenceRead" Type="Boolean" Nullable="false" />
+          <Property Name="EvidenceWrite" Type="Boolean" Nullable="false" />
+          <Property Name="EvidenceUpdate" Type="Boolean" Nullable="false" />
+          <Property Name="EvidenceDelete" Type="Boolean" Nullable="false" />
+          <Property Name="EvidenceDownload" Type="Boolean" Nullable="false" />
+          <Property Name="UserView" Type="Boolean" Nullable="false" />
+          <Property Name="UserEdit" Type="Boolean" Nullable="false" />
+          <Property Name="UserDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PermissionRoles" Relationship="Self.FK_PermissionRoles_Permissions1" FromRole="Permissions" ToRole="PermissionRoles" />
+          <NavigationProperty Name="PermissionUsers" Relationship="Self.FK_PermissionUser_Permissions1" FromRole="Permissions" ToRole="PermissionUser" />
+        </EntityType>
+        <EntityType Name="PermissionUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GrantPermission" Type="Boolean" Nullable="false" />
+          <Property Name="PermissionId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_PermissionUser_Permissions" FromRole="PermissionUser" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_PermissionUser_Permissions1" FromRole="PermissionUser" ToRole="Permissions" />
+        </EntityType>
+        <Association Name="FK_PermissionRoles_Permissions">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="1" />
+          <End Role="PermissionRoles" Type="Self.PermissionRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PermissionUser_Permissions">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PermissionRoles_Permissions1">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
+          <End Role="PermissionRoles" Type="Self.PermissionRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionRoles">
+              <PropertyRef Name="PermissionsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PermissionUser_Permissions1">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
+          <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PermissionUser">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="PermissionRoles" EntityType="Self.PermissionRole" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="PermissionUsers" EntityType="Self.PermissionUser" />
+          <AssociationSet Name="FK_PermissionRoles_Permissions" Association="Self.FK_PermissionRoles_Permissions">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="PermissionRoles" EntitySet="PermissionRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PermissionUser_Permissions" Association="Self.FK_PermissionUser_Permissions">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="PermissionUser" EntitySet="PermissionUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PermissionRoles_Permissions1" Association="Self.FK_PermissionRoles_Permissions1">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionRoles" EntitySet="PermissionRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PermissionUser_Permissions1" Association="Self.FK_PermissionUser_Permissions1">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionUser" EntitySet="PermissionUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DDataModelStoreContainer" CdmEntityContainer="DDataEntities">
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="DDataModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="DDataModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionRoles">
+            <EntityTypeMapping TypeName="DDataModel.PermissionRole">
+              <MappingFragment StoreEntitySet="PermissionRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="GrantPermisiion" ColumnName="GrantPermisiion" />
+                <ScalarProperty Name="PermissionsId" ColumnName="PermissionsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="DDataModel.Permission">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EvidenceRead" ColumnName="EvidenceRead" />
+                <ScalarProperty Name="EvidenceWrite" ColumnName="EvidenceWrite" />
+                <ScalarProperty Name="EvidenceUpdate" ColumnName="EvidenceUpdate" />
+                <ScalarProperty Name="EvidenceDelete" ColumnName="EvidenceDelete" />
+                <ScalarProperty Name="EvidenceDownload" ColumnName="EvidenceDownload" />
+                <ScalarProperty Name="UserView" ColumnName="UserView" />
+                <ScalarProperty Name="UserEdit" ColumnName="UserEdit" />
+                <ScalarProperty Name="UserDelete" ColumnName="UserDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionUsers">
+            <EntityTypeMapping TypeName="DDataModel.PermissionUser">
+              <MappingFragment StoreEntitySet="PermissionUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GrantPermission" ColumnName="GrantPermission" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

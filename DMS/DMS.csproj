@@ -630,6 +630,11 @@
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Admin\Role\Create.cshtml" />
+    <Content Include="Views\Admin\Role\Delete.cshtml" />
+    <Content Include="Views\Admin\Role\Details.cshtml" />
+    <Content Include="Views\Admin\Role\Edit.cshtml" />
+    <Content Include="Views\Admin\Role\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
