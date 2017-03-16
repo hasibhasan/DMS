@@ -3,7 +3,7 @@
 @Html.Partial("_Sidebar")
 <div class="main-content">
     <div class="main-content-inner">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("RoleEdit", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
 

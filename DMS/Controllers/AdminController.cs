@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace DMS.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
 
@@ -23,11 +24,13 @@ namespace DMS.Controllers
         {
             return View();
         }
-        
+
+        [Authorize(Roles = "Administrator")]
         public ActionResult Role()
         {
             return View("~/Views/Admin/Role/Index.cshtml", db.AspNetRoles.ToList());
         }
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleDetails(string id)
         {
             if (id == null)
@@ -42,7 +45,9 @@ namespace DMS.Controllers
             return View("~/Views/Admin/Role/Details.cshtml", aspnetrole);
         }
 
+
         // GET: /Role/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleCreate()
         {
             return View("~/Views/Admin/Role/Create.cshtml");
@@ -53,6 +58,7 @@ namespace DMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleCreate([Bind(Include = "Name")] AspNetRole aspnetrole)
         {
             if (ModelState.IsValid)
@@ -67,7 +73,7 @@ namespace DMS.Controllers
                         var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
                         role.Name = aspnetrole.Name;
                         roleManager.Create(role);                      
-                    }           
+                    }               
 
 
                 return RedirectToAction("Index");
@@ -77,6 +83,7 @@ namespace DMS.Controllers
         }
 
         // GET: /Role/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleEdit(string id)
         {
             if (id == null)
@@ -96,6 +103,7 @@ namespace DMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleEdit([Bind(Include = "Id,Name")] AspNetRole aspnetrole)
         {
             if (ModelState.IsValid)
@@ -108,6 +116,7 @@ namespace DMS.Controllers
         }
 
         // GET: /Role/Delete/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleDelete(string id)
         {
             if (id == null)
@@ -123,8 +132,9 @@ namespace DMS.Controllers
         }
 
         // POST: /Role/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("RoleDeleteConfirmed")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult RoleDeleteConfirmed(string id)
         {
             AspNetRole aspnetrole = db.AspNetRoles.Find(id);

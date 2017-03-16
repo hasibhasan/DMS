@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\Gender.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ViewModel\AccountViewModels.cs" />
     <Compile Include="Models\DB\AspNetRole.cs">
       <DependentUpon>DMSDataEntities.tt</DependentUpon>
     </Compile>
@@ -116,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\EntityManager\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
