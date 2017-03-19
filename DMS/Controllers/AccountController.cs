@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using DMS.Models;
+using DMS.Models.ViewModel;
 
 namespace DMS.Controllers
 {

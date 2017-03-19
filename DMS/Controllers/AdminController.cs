@@ -1,4 +1,6 @@
 ﻿using DataModel.Models.DB;
+using DataModel.Models.EntityManager;
+using DataModel.Models.ViewModel;
 using DMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -15,20 +17,24 @@ namespace DMS.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-
+        
         private DDataEntities db = new DDataEntities();
+       
+        
         //
         // GET: /Admin/
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
+            
             return View();
         }
 
         [Authorize(Roles = "Administrator")]
         public ActionResult Role()
         {
-            return View("~/Views/Admin/Role/Index.cshtml", db.AspNetRoles.ToList());
+            AdminManager adm = new AdminManager();            
+            return View("~/Views/Admin/Role/Index.cshtml",adm.GetAllRole());
         }
         [Authorize(Roles = "Administrator")]
         public ActionResult RoleDetails(string id)
@@ -37,12 +43,14 @@ namespace DMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetRole aspnetrole = db.AspNetRoles.Find(id);
-            if (aspnetrole == null)
+            
+            AdminManager adm = new AdminManager();
+            RoleViewModel role = adm.SelectRole(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View("~/Views/Admin/Role/Details.cshtml", aspnetrole);
+            return View("~/Views/Admin/Role/Details.cshtml", role);
         }
 
 
@@ -59,27 +67,19 @@ namespace DMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult RoleCreate([Bind(Include = "Name")] AspNetRole aspnetrole)
+        public ActionResult RoleCreate([Bind(Include = "Name")] RoleViewModel roleViewModel)
         {
             if (ModelState.IsValid)
-            {
-             
+            { 
+                AdminManager adm = new AdminManager();
 
-
-                var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-
-                if (!roleManager.RoleExists(aspnetrole.Name))
-                    {
-                        var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                        role.Name = aspnetrole.Name;
-                        roleManager.Create(role);                      
-                    }               
-
-
-                return RedirectToAction("Index");
+                if (adm.CreateRole(roleViewModel)) {
+                    return RedirectToAction("Role");
+                }                
+                
             }
 
-            return View("~/Views/Admin/Role/Index.cshtml", aspnetrole);
+            return View("~/Views/Admin/Role/Index.cshtml", roleViewModel);
         }
 
         // GET: /Role/Edit/5
@@ -90,12 +90,13 @@ namespace DMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetRole aspnetrole = db.AspNetRoles.Find(id);
-            if (aspnetrole == null)
+            AdminManager adm = new AdminManager();
+            RoleViewModel role = adm.SelectRole(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View("~/Views/Admin/Role/Edit.cshtml",aspnetrole);
+            return View("~/Views/Admin/Role/Edit.cshtml",role);
         }
 
         // POST: /Role/Edit/5
@@ -104,15 +105,15 @@ namespace DMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult RoleEdit([Bind(Include = "Id,Name")] AspNetRole aspnetrole)
+        public ActionResult RoleEdit([Bind(Include = "Id,Name")] RoleViewModel roleViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(aspnetrole).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                AdminManager adm = new AdminManager();
+                adm.UpdateRole(roleViewModel);
+                return RedirectToAction("Role");
             }
-            return View("~/Views/Admin/Role/Edit.cshtml",aspnetrole);
+            return View("~/Views/Admin/Role/Edit.cshtml",roleViewModel);
         }
 
         // GET: /Role/Delete/5

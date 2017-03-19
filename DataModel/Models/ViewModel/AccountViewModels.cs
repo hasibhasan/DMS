@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMS.Models
+namespace DMS.Models.ViewModel
 {
     public class ExternalLoginConfirmationViewModel
     {
@@ -80,5 +80,6 @@ namespace DMS.Models
         
         [Display(Name = "NID")]
         public string NID { get; set; }
+
     }
 }

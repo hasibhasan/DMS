@@ -1,4 +1,4 @@
-﻿@model DMS.Models.LoginViewModel
+﻿@model DMS.Models.ViewModel.LoginViewModel
 
 @{
     ViewBag.Title = "Log in";
@@ -35,8 +35,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <div class="checkbox">
-                                @Html.CheckBoxFor(m => m.RememberMe)
+                            <div class="checkbox">                                
+                                @Html.CheckBoxFor(m =>m.RememberMe)
                                 @Html.LabelFor(m => m.RememberMe)
                             </div>
                         </div>
