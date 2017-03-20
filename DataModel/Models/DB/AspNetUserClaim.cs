@@ -12,18 +12,13 @@ namespace DataModel.Models.DB
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetRole
+    public partial class AspNetUserClaim
     {
-        public AspNetRole()
-        {
-            this.PermissionRoles = new HashSet<PermissionRole>();
-            this.AspNetUsers = new HashSet<AspNetUser>();
-        }
+        public int Id { get; set; }
+        public string ClaimType { get; set; }
+        public string ClaimValue { get; set; }
+        public string User_Id { get; set; }
     
-        public string Id { get; set; }
-        public string Name { get; set; }
-    
-        public virtual ICollection<PermissionRole> PermissionRoles { get; set; }
-        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

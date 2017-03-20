@@ -17,22 +17,22 @@ namespace DMS.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        
-        private DDataEntities db = new DDataEntities();
-       
+              
         
         //
         // GET: /Admin/
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            
+               
             return View();
         }
 
         [Authorize(Roles = "Administrator")]
         public ActionResult Role()
         {
+            
+
             AdminManager adm = new AdminManager();            
             return View("~/Views/Admin/Role/Index.cshtml",adm.GetAllRole());
         }
@@ -124,12 +124,13 @@ namespace DMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetRole aspnetrole = db.AspNetRoles.Find(id);
-            if (aspnetrole == null)
+            AdminManager adm = new AdminManager();
+            RoleViewModel role = adm.SelectRole(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View("~/Views/Admin/Role/Delete.cshtml",aspnetrole);
+            return View("~/Views/Admin/Role/Delete.cshtml",role);
         }
 
         // POST: /Role/Delete/5
@@ -138,19 +139,23 @@ namespace DMS.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult RoleDeleteConfirmed(string id)
         {
-            AspNetRole aspnetrole = db.AspNetRoles.Find(id);
-            db.AspNetRoles.Remove(aspnetrole);
-            db.SaveChanges();
+            AdminManager adm = new AdminManager();
+            adm.RoleDelete(id);
             return RedirectToAction("Role");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            AdminManager adm = new AdminManager();
+            adm.Dispose();
             base.Dispose(disposing);
+        }
+
+        public ActionResult Admins()
+        {
+            AdminManager adm = new AdminManager();
+            var res= adm.GetAllAdmins();
+            return View("~/Views/Admin/Role/Index.cshtml",res);
         }
 
 

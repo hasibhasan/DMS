@@ -59,64 +59,69 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\Gender.cs" />
-    <Compile Include="Models\EntityManager\AdminManager.cs" />
-    <Compile Include="Models\ViewModel\AccountViewModels.cs" />
     <Compile Include="Models\DB\AspNetRole.cs">
-      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+      <DependentUpon>DMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DB\AspNetUser.cs">
-      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+      <DependentUpon>DMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DB\DMSDataEntities.Context.cs">
+    <Compile Include="Models\DB\AspNetUserClaim.cs">
+      <DependentUpon>DMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\AspNetUserLogin.cs">
+      <DependentUpon>DMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\DMSEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DMSDataEntities.Context.tt</DependentUpon>
+      <DependentUpon>DMSEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DB\DMSDataEntities.cs">
+    <Compile Include="Models\DB\DMSEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+      <DependentUpon>DMSEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DB\DMSDataEntities.Designer.cs">
+    <Compile Include="Models\DB\DMSEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
+      <DependentUpon>DMSEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DB\Permission.cs">
-      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+      <DependentUpon>DMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DB\PermissionRole.cs">
-      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+      <DependentUpon>DMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DB\PermissionUser.cs">
-      <DependentUpon>DMSDataEntities.tt</DependentUpon>
+      <DependentUpon>DMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EntityManager\AdminManager.cs" />
+    <Compile Include="Models\ViewModel\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ViewModel\AdminViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Models\DB\DMSDataEntities.edmx">
+    <EntityDeploy Include="Models\DB\DMSEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DMSDataEntities.Designer.cs</LastGenOutput>
+      <LastGenOutput>DMSEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Models\DB\DMSDataEntities.Context.tt">
+    <None Include="Models\DB\DMSEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
-      <LastGenOutput>DMSDataEntities.Context.cs</LastGenOutput>
+      <DependentUpon>DMSEntities.edmx</DependentUpon>
+      <LastGenOutput>DMSEntities.Context.cs</LastGenOutput>
     </None>
-    <None Include="Models\DB\DMSDataEntities.edmx.diagram">
-      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
+    <None Include="Models\DB\DMSEntities.edmx.diagram">
+      <DependentUpon>DMSEntities.edmx</DependentUpon>
     </None>
-    <None Include="Models\DB\DMSDataEntities.tt">
+    <None Include="Models\DB\DMSEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DMSDataEntities.edmx</DependentUpon>
-      <LastGenOutput>DMSDataEntities.cs</LastGenOutput>
+      <DependentUpon>DMSEntities.edmx</DependentUpon>
+      <LastGenOutput>DMSEntities.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

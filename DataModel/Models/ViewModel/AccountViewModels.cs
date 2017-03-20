@@ -81,5 +81,9 @@ namespace DMS.Models.ViewModel
         [Display(Name = "NID")]
         public string NID { get; set; }
 
+       
+        [Display(Name = "Assigned Role")]
+        public string Role { get; set; }
+
     }
 }

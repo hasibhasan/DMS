@@ -1,6 +1,7 @@
 ﻿using DataModel.Models.DB;
 using DataModel.Models.ViewModel;
 using DMS.Models;
+using DMS.Models.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -14,7 +15,7 @@ namespace DataModel.Models.EntityManager
 {
     public class AdminManager
     {
-        private DDataEntities db = new DDataEntities();
+        private DDataEntities db = new DDataEntities();        
 
         public List<RoleViewModel> GetAllRole()
         {
@@ -32,13 +33,13 @@ namespace DataModel.Models.EntityManager
         {
             
             var roles = db.AspNetRoles.Find(id);
-            var roleViewMode = new RoleViewModel{
+            var roleViewModel = new RoleViewModel{
                 Id= roles.Id,
                 Name = roles.Name
             };
 
-            return roleViewMode;            
-        }
+            return roleViewModel;            
+        } 
         public bool CreateRole(RoleViewModel roleViewModel)
         {
 
@@ -79,6 +80,45 @@ namespace DataModel.Models.EntityManager
             
             
         }
+        public bool RoleDelete(string id)
+        {
+            try
+            {
+                AspNetRole aspnetrole = db.AspNetRoles.Find(id);
+                db.AspNetRoles.Remove(aspnetrole);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        private bool disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+
+            if (!this.disposed)
+                if (disposing)
+                    db.Dispose();
+
+            this.disposed = true;
+        }
+        public List<RegisterViewModel> GetAllAdmins()
+        {
+            return null;       
+             
+        }  
+
+        public void Dispose()
+        {
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
 
 
     }

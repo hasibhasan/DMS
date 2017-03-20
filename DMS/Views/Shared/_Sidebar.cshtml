@@ -37,6 +37,18 @@
     </div><!-- /.sidebar-shortcuts -->
 
     <ul class="nav nav-list">
+
+     @if (User.IsInRole("Administrator"))
+     {
+        <li class="">
+            <a href="@Url.Action("Role", "Admin")">
+                <i class="menu-icon fa fa-key"></i>
+                <span class="menu-text"> Role </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+    }
         <li class="">
             <a href="index.html">
                 <i class="menu-icon fa fa-tachometer"></i>
