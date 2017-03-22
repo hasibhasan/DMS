@@ -20,4 +20,5 @@ namespace DataModel.Models.ViewModel
         [Display(Name = "User name")]
         public string Name { get; set; }
     }
+
 }

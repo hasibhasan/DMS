@@ -15,7 +15,8 @@ namespace DataModel.Models.EntityManager
 {
     public class AdminManager
     {
-        private DDataEntities db = new DDataEntities();        
+        private DDataEntities db = new DDataEntities();
+        ApplicationDbContext context = new ApplicationDbContext();
 
         public List<RoleViewModel> GetAllRole()
         {
@@ -41,7 +42,8 @@ namespace DataModel.Models.EntityManager
             return roleViewModel;            
         } 
         public bool CreateRole(RoleViewModel roleViewModel)
-        {
+        {            
+            
 
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
 
@@ -95,6 +97,31 @@ namespace DataModel.Models.EntityManager
             }
         }
 
+        public List<UserRoleListViewModel> GetAllUsers()        {
+
+            List<UserRoleListViewModel> UserRoleList = new List<UserRoleListViewModel>();
+            
+            var usermanager= new UserManager<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>(new UserStore<IdentityUser>(new ApplicationDbContext()));
+            var userlist = context.Users.OrderBy(r => r.UserName).ToList();
+            foreach (var item in userlist)
+            {
+                IList<string> roleNames = usermanager.GetRoles(item.Id);
+                UserRoleListViewModel userRoleListViewModel = new UserRoleListViewModel{
+                    UserName= item.UserName,
+                    Address = item.Address,
+                    Email = item.Email,
+                    Gender = item.Gender,
+                    NID = item.NID,
+                    Phone = item.Phone,
+                    Rolelist = roleNames
+                };
+                UserRoleList.Add(userRoleListViewModel);
+            }
+
+            return UserRoleList;
+
+        }  
+
 
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
@@ -106,11 +133,7 @@ namespace DataModel.Models.EntityManager
 
             this.disposed = true;
         }
-        public List<RegisterViewModel> GetAllAdmins()
-        {
-            return null;       
-             
-        }  
+        
 
         public void Dispose()
         {

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DMS.Models.ViewModel.UserRoleListViewModel>
+@Html.Partial("_Sidebar")
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="page-content">
+            
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Rolelist)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rolelist)
+                        </td>
+                       
+                        <td>
+                            @Html.ActionLink("Edit", "RoleEdit", new { id = item.Email }) |
+                            @Html.ActionLink("Details", "RoleDetails", new { id = item.Email }) |
+                            @Html.ActionLink("Delete", "RoleDelete", new { id = item.Email })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

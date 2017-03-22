@@ -153,9 +153,10 @@ namespace DMS.Controllers
 
         public ActionResult Admins()
         {
+           
             AdminManager adm = new AdminManager();
-            var res= adm.GetAllAdmins();
-            return View("~/Views/Admin/Role/Index.cshtml",res);
+            var users= adm.GetAllUsers();  
+            return View("~/Views/Admin/UserRole/Index.cshtml",users);
         }
 
 

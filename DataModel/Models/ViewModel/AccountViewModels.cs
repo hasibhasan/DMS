@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DMS.Models.ViewModel
 {
@@ -84,6 +85,39 @@ namespace DMS.Models.ViewModel
        
         [Display(Name = "Assigned Role")]
         public string Role { get; set; }
+
+    }
+    public class UserRoleListViewModel
+    {
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+       
+
+        [Required]
+        [Display(Name = "Gender")]
+        public string Gender { get; set; }
+
+        [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+
+        [Required]
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
+
+
+        [Display(Name = "NID")]
+        public string NID { get; set; }
+
+
+        [Display(Name = "Assigned Role")]
+        public IList<string> Rolelist { get; set; }
 
     }
 }

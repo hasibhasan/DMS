@@ -44,6 +44,7 @@ namespace DMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
@@ -67,6 +68,7 @@ namespace DMS.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            
             //Create Basic Two Roles when firsts setup
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
             var rolesToBeCreated = new List<string> { "Administrator", "User" };
