@@ -10,26 +10,26 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ClaimType" Type="nvarchar(max)" />
           <Property Name="ClaimValue" Type="nvarchar(max)" />
-          <Property Name="User_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserLogins">
           <Key>
-            <PropertyRef Name="UserId" />
             <PropertyRef Name="LoginProvider" />
             <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserRoles">
           <Key>
@@ -44,15 +44,21 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="Gender" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="NID" Type="nvarchar(max)" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
           <Property Name="PasswordHash" Type="nvarchar(max)" />
           <Property Name="SecurityStamp" Type="nvarchar(max)" />
-          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Phone" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="NID" Type="nvarchar" MaxLength="50" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="PermissionRoles">
           <Key>
@@ -87,7 +93,7 @@
           <Property Name="GrantPermission" Type="bit" Nullable="false" />
           <Property Name="PermissionId" Type="bigint" Nullable="false" />
         </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -97,7 +103,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="User_Id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -143,7 +149,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionRoles_Permissions">
+        <Association Name="FK_PermissionRoles_AspNetRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
           <End Role="PermissionRoles" Type="Self.PermissionRoles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -155,7 +161,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionRoles_Permissions1">
+        <Association Name="FK_PermissionRoles_Permissions">
           <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
           <End Role="PermissionRoles" Type="Self.PermissionRoles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -167,7 +173,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionUser_Permissions">
+        <Association Name="FK_PermissionUser_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -179,7 +185,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionUser_Permissions1">
+        <Association Name="FK_PermissionUser_Permissions">
           <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
           <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -200,7 +206,7 @@
           <EntitySet Name="PermissionRoles" EntityType="Self.PermissionRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PermissionUser" EntityType="Self.PermissionUser" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
@@ -216,19 +222,19 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionRoles_Permissions" Association="Self.FK_PermissionRoles_Permissions">
+          <AssociationSet Name="FK_PermissionRoles_AspNetRoles" Association="Self.FK_PermissionRoles_AspNetRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="PermissionRoles" EntitySet="PermissionRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionRoles_Permissions1" Association="Self.FK_PermissionRoles_Permissions1">
+          <AssociationSet Name="FK_PermissionRoles_Permissions" Association="Self.FK_PermissionRoles_Permissions">
             <End Role="Permissions" EntitySet="Permissions" />
             <End Role="PermissionRoles" EntitySet="PermissionRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionUser_Permissions" Association="Self.FK_PermissionUser_Permissions">
+          <AssociationSet Name="FK_PermissionUser_AspNetUsers" Association="Self.FK_PermissionUser_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="PermissionUser" EntitySet="PermissionUser" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionUser_Permissions1" Association="Self.FK_PermissionUser_Permissions1">
+          <AssociationSet Name="FK_PermissionUser_Permissions" Association="Self.FK_PermissionUser_Permissions">
             <End Role="Permissions" EntitySet="Permissions" />
             <End Role="PermissionUser" EntitySet="PermissionUser" />
           </AssociationSet>
@@ -243,8 +249,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="PermissionRoles" Relationship="Self.FK_PermissionRoles_Permissions" FromRole="AspNetRoles" ToRole="PermissionRoles" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PermissionRoles" Relationship="Self.FK_PermissionRoles_AspNetRoles" FromRole="AspNetRoles" ToRole="PermissionRoles" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
@@ -252,20 +258,20 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="User_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserLogin">
           <Key>
-            <PropertyRef Name="UserId" />
             <PropertyRef Name="LoginProvider" />
             <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUser">
@@ -273,18 +279,24 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="PermissionUsers" Relationship="Self.FK_PermissionUser_Permissions" FromRole="AspNetUsers" ToRole="PermissionUser" />
+          <NavigationProperty Name="PermissionUsers" Relationship="Self.FK_PermissionUser_AspNetUsers" FromRole="AspNetUsers" ToRole="PermissionUser" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="PermissionRole">
@@ -295,8 +307,8 @@
           <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="GrantPermisiion" Type="Boolean" Nullable="false" />
           <Property Name="PermissionsId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="AspNetRole" Relationship="Self.FK_PermissionRoles_Permissions" FromRole="PermissionRoles" ToRole="AspNetRoles" />
-          <NavigationProperty Name="Permission" Relationship="Self.FK_PermissionRoles_Permissions1" FromRole="PermissionRoles" ToRole="Permissions" />
+          <NavigationProperty Name="AspNetRole" Relationship="Self.FK_PermissionRoles_AspNetRoles" FromRole="PermissionRoles" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_PermissionRoles_Permissions" FromRole="PermissionRoles" ToRole="Permissions" />
         </EntityType>
         <EntityType Name="Permission">
           <Key>
@@ -312,8 +324,8 @@
           <Property Name="UserView" Type="Boolean" Nullable="false" />
           <Property Name="UserEdit" Type="Boolean" Nullable="false" />
           <Property Name="UserDelete" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="PermissionRoles" Relationship="Self.FK_PermissionRoles_Permissions1" FromRole="Permissions" ToRole="PermissionRoles" />
-          <NavigationProperty Name="PermissionUsers" Relationship="Self.FK_PermissionUser_Permissions1" FromRole="Permissions" ToRole="PermissionUser" />
+          <NavigationProperty Name="PermissionRoles" Relationship="Self.FK_PermissionRoles_Permissions" FromRole="Permissions" ToRole="PermissionRoles" />
+          <NavigationProperty Name="PermissionUsers" Relationship="Self.FK_PermissionUser_Permissions" FromRole="Permissions" ToRole="PermissionUser" />
         </EntityType>
         <EntityType Name="PermissionUser">
           <Key>
@@ -323,10 +335,10 @@
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="GrantPermission" Type="Boolean" Nullable="false" />
           <Property Name="PermissionId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_PermissionUser_Permissions" FromRole="PermissionUser" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Permission" Relationship="Self.FK_PermissionUser_Permissions1" FromRole="PermissionUser" ToRole="Permissions" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_PermissionUser_AspNetUsers" FromRole="PermissionUser" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_PermissionUser_Permissions" FromRole="PermissionUser" ToRole="Permissions" />
         </EntityType>
-        <Association Name="FK_PermissionRoles_Permissions">
+        <Association Name="FK_PermissionRoles_AspNetRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="1" />
           <End Role="PermissionRoles" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -338,7 +350,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -348,7 +360,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="User_Id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -366,7 +378,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionUser_Permissions">
+        <Association Name="FK_PermissionUser_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
           <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -378,7 +390,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionRoles_Permissions1">
+        <Association Name="FK_PermissionRoles_Permissions">
           <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
           <End Role="PermissionRoles" Type="Self.PermissionRole" Multiplicity="*" />
           <ReferentialConstraint>
@@ -390,7 +402,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PermissionUser_Permissions1">
+        <Association Name="FK_PermissionUser_Permissions">
           <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
           <End Role="PermissionUser" Type="Self.PermissionUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -414,11 +426,11 @@
           <EntitySet Name="PermissionRoles" EntityType="Self.PermissionRole" />
           <EntitySet Name="Permissions" EntityType="Self.Permission" />
           <EntitySet Name="PermissionUsers" EntityType="Self.PermissionUser" />
-          <AssociationSet Name="FK_PermissionRoles_Permissions" Association="Self.FK_PermissionRoles_Permissions">
+          <AssociationSet Name="FK_PermissionRoles_AspNetRoles" Association="Self.FK_PermissionRoles_AspNetRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="PermissionRoles" EntitySet="PermissionRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
@@ -426,15 +438,15 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionUser_Permissions" Association="Self.FK_PermissionUser_Permissions">
+          <AssociationSet Name="FK_PermissionUser_AspNetUsers" Association="Self.FK_PermissionUser_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="PermissionUser" EntitySet="PermissionUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionRoles_Permissions1" Association="Self.FK_PermissionRoles_Permissions1">
+          <AssociationSet Name="FK_PermissionRoles_Permissions" Association="Self.FK_PermissionRoles_Permissions">
             <End Role="Permissions" EntitySet="Permissions" />
             <End Role="PermissionRoles" EntitySet="PermissionRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_PermissionUser_Permissions1" Association="Self.FK_PermissionUser_Permissions1">
+          <AssociationSet Name="FK_PermissionUser_Permissions" Association="Self.FK_PermissionUser_Permissions">
             <End Role="Permissions" EntitySet="Permissions" />
             <End Role="PermissionUser" EntitySet="PermissionUsers" />
           </AssociationSet>
@@ -461,18 +473,18 @@
             <EntityTypeMapping TypeName="DDataModel.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
                 <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
             <EntityTypeMapping TypeName="DDataModel.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -480,15 +492,21 @@
             <EntityTypeMapping TypeName="DDataModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="NID" ColumnName="NID" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

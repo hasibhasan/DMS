@@ -19,14 +19,14 @@
 
                 </dl>
 
-                @using (Html.BeginForm("RoleDeleteConfirmed", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                @using (Html.BeginForm("DeleteConfirmed", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <div class="form-actions no-color">
                         @Html.HiddenFor(model => model.Id)
                         <input type="submit" value="Delete" class="btn btn-default" /> |
-                        @Html.ActionLink("Back to List", "Role")
+                        @Html.ActionLink("Back to List", "Index")
                     </div>
                 }
             </div>

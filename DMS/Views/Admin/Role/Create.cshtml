@@ -4,7 +4,7 @@
 <div class="main-content">
     <div class="main-content-inner">
         <div class="page-content">
-            @using (Html.BeginForm("RoleCreate", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Create", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             { @Html.AntiForgeryToken()
                 <div class="form-horizontal">
                     <h4>AspNetRole</h4>
@@ -28,7 +28,7 @@
             }
 
             <div>
-                @Html.ActionLink("Back to List", "Role")
+                @Html.ActionLink("Back to List", "Index")
             </div>
         </div>
     </div>

@@ -15,19 +15,27 @@ namespace DataModel.Models.EntityManager
 {
     public class AdminManager
     {
-        private DDataEntities db = new DDataEntities();
-        ApplicationDbContext context = new ApplicationDbContext();
+        private DDataEntities db = new DDataEntities();        
 
         public List<RoleViewModel> GetAllRole()
         {
-            
-            var roles = db.AspNetRoles.Select(o => new RoleViewModel
-            {
-                Id = o.Id,
-                Name =  o.Name                
-            }).ToList();
 
-            return roles;            
+            try
+            {
+                var roles = db.AspNetRoles.Select(o => new RoleViewModel
+                {
+                    Id = o.Id,
+                    Name = o.Name
+                }).ToList();
+                return roles;
+            }
+            catch
+            {
+                return null;
+            }
+
+
+                    
         }        
 
         public RoleViewModel SelectRole(string id)
@@ -95,32 +103,7 @@ namespace DataModel.Models.EntityManager
             {
                 return false;
             }
-        }
-
-        public List<UserRoleListViewModel> GetAllUsers()        {
-
-            List<UserRoleListViewModel> UserRoleList = new List<UserRoleListViewModel>();
-            
-            var usermanager= new UserManager<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>(new UserStore<IdentityUser>(new ApplicationDbContext()));
-            var userlist = context.Users.OrderBy(r => r.UserName).ToList();
-            foreach (var item in userlist)
-            {
-                IList<string> roleNames = usermanager.GetRoles(item.Id);
-                UserRoleListViewModel userRoleListViewModel = new UserRoleListViewModel{
-                    UserName= item.UserName,
-                    Address = item.Address,
-                    Email = item.Email,
-                    Gender = item.Gender,
-                    NID = item.NID,
-                    Phone = item.Phone,
-                    Rolelist = roleNames
-                };
-                UserRoleList.Add(userRoleListViewModel);
-            }
-
-            return UserRoleList;
-
-        }  
+        }       
 
 
         private bool disposed = false;

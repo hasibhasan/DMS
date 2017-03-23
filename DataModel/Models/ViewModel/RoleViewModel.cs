@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataModel.Models.ViewModel
 {
-    public class AdminViewModel
-    {
-
-    }
+   
     public class RoleViewModel
     {
         [Key]

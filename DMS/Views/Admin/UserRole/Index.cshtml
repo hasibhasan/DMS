@@ -50,9 +50,9 @@
                         </td>
                        
                         <td>
-                            @Html.ActionLink("Edit", "RoleEdit", new { id = item.Email }) |
-                            @Html.ActionLink("Details", "RoleDetails", new { id = item.Email }) |
-                            @Html.ActionLink("Delete", "RoleDelete", new { id = item.Email })
+                            @Html.ActionLink("Edit", "RoleEdit", new { id = item.Id }) |                            
+                            @Html.ActionLink("Delete", "RoleDelete", new { id = item.Id },
+                                            new { onclick = "return confirm('Are you sure you wish to delete this User?');" })
                         </td>
                     </tr>
                 }

@@ -4,16 +4,17 @@
     <div class="main-content-inner">
         <div class="page-content">
             <p>
-                @Html.ActionLink("Create New", "RoleCreate")
+                @Html.ActionLink("Create New", "Create")
             </p>
+            @if (Model != null)
+            { 
             <table class="table">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th></th>
-                </tr>
-
+                </tr>                
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -21,14 +22,19 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "RoleEdit", new { id = item.Id }) |
-                            @Html.ActionLink("Details", "RoleDetails", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "RoleDelete", new { id = item.Id })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                         </td>
                     </tr>
                 }
 
             </table>
+            }
+            else
+            {
+                <h3>No Role Available</h3>
+            }
         </div>
         </div>
 </div>
