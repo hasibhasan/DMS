@@ -32,6 +32,5 @@ namespace DataModel.Models.DB
         public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<PermissionUser> PermissionUsers { get; set; }
-
     }
 }

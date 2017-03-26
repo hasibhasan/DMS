@@ -9,7 +9,7 @@ namespace DataModel.Models.ViewModel
 {
     public class UserManagementViewModel
     {
-       
+        [Key]
         public string Id { get; set; }
         [Required]
         [Display(Name = "User name")]

@@ -12,20 +12,18 @@ namespace DataModel.Models.EntityManager
 {
     public class UserManagementManager
     {
-        ApplicationDbContext db = new ApplicationDbContext();
-        
+          private ApplicationDbContext context = new ApplicationDbContext();        
 
           public List<UserManagementViewModel> GetAllUsers()
           {
 
               List<UserManagementViewModel> UserRoleList = new List<UserManagementViewModel>();
-              var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-              var usermanager= new UserManager<IdentityUser>(new UserStore<IdentityUser>(db));
-              var userlist = db.Users.OrderBy(r => r.UserName).ToList();
-              foreach (var item in userlist)
-              {
-                  
-                 
+              var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+
+              var userlist = context.Users.OrderBy(r => r.UserName).ToList();
+              foreach (var item in userlist){
+                var roles = userManager.GetRoles(item.Id);               
                   UserManagementViewModel userRoleListViewModel = new UserManagementViewModel
                   {
                       Id = item.Id,
@@ -35,6 +33,7 @@ namespace DataModel.Models.EntityManager
                       Gender = item.Gender,
                       NID = item.NID,
                       Phone = item.Phone
+                   
                      
                       
                   };
@@ -52,7 +51,7 @@ namespace DataModel.Models.EntityManager
                   var user = await usermanager.FindByIdAsync(id);
                   var logins = user.Logins;
                   var rolesForUser = await usermanager.GetRolesAsync(id);
-                  using (var transaction = db.Database.BeginTransaction())
+                  using (var transaction = context.Database.BeginTransaction())
                   {
                       foreach (var login in logins.ToList())
                       {
@@ -78,23 +77,6 @@ namespace DataModel.Models.EntityManager
                   return false;
               }
           }
-          private bool disposed = false;
-          protected virtual void Dispose(bool disposing)
-          {
-
-              if (!this.disposed)
-                  if (disposing)
-                      db.Dispose();
-
-              this.disposed = true;
-          }
-
-
-          public void Dispose()
-          {
-
-              Dispose(true);
-              GC.SuppressFinalize(this);
-          }
+          
     }
 }

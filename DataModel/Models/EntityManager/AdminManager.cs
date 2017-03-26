@@ -51,10 +51,8 @@ namespace DataModel.Models.EntityManager
         } 
         public bool CreateRole(RoleViewModel roleViewModel)
         {            
-            
 
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-
             if (!roleManager.RoleExists(roleViewModel.Name))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();

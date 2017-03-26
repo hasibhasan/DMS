@@ -8,14 +8,16 @@ using System.Web.Mvc;
 
 namespace DMS.Controllers
 {
+    
     public class UserManagementController : Controller
     {
         //
         // GET: /UserManagement/
         public ActionResult Index()
         {
-            UserManagementManager umm = new UserManagementManager();            
-            return View(umm.GetAllUsers());
+            UserManagementManager umm = new UserManagementManager();
+            var a = umm.GetAllUsers();         
+            return View(a);
         }
 
         //
