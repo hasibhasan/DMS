@@ -8,24 +8,29 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using DMS.Models;
 using DMS.Models.ViewModel;
+using DataModel.Models.EntityManager;
+using Microsoft.Owin.Security.DataProtection;
+using Microsoft.AspNet.Identity.Owin;
+using reCAPTCHA.MVC;
+using DataModel.Models.DB;
+using DataModel.Models.ViewModel;
+
 
 namespace DMS.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext context = new ApplicationDbContext();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
-
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
         }
-
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
         //
@@ -33,7 +38,6 @@ namespace DMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-          
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -45,22 +49,119 @@ namespace DMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                    {
+                        ViewBag.errorMessage = "You must have a confirmed email to log on.";
+                        return View();
+                    }
+                    else
+                    {
+                        await SignInAsync(user, model.RememberMe);
+                        return RedirectToLocal(returnUrl);
+                    }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
+            return View(model);
+        }
 
-            // If we got this far, something failed, redisplay form
+        //
+        // GET: /Account/ForgotPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(string emailTxtBox)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByEmailAsync(emailTxtBox);
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    ViewBag.Message = "Please insert a valid email!!!";
+                    return View("Info");
+                }
+                var provider = new DpapiDataProtectionProvider("DMS");
+                UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("ForgotPasswordConfirmation"));
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                string body = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                EmailManager emm = new EmailManager();
+                bool isMailSend = await emm.EmailSend(body, emailTxtBox);
+                ViewBag.Message = "Check your email and confirm your password reset request";
+                return View("Info");
+            }
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> ResetPassword(string userId = null, string code = null)
+        {
+            if (userId == null || code == null)
+            {
+                ViewBag.Message = "Sorry..Invalid Request!!";
+                return View("info");
+            }
+
+            var user = await UserManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.Message = "Sorry..Invalid Request!!";
+                return View("info");
+            }
+            return View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return RedirectToAction("ResetConfirmation", "Account");
+                }
+                var provider = new DpapiDataProtectionProvider("DMS");
+                UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(
+                    provider.Create("ForgotPasswordConfirmation"));
+                var result = await UserManager.ResetPasswordAsync(model.UserId, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    ViewBag.Message = "Your Password has been reset :)";
+                    return View("info");
+                }
+                else
+                {
+                    ViewBag.Message = "Session Expired.Please try a new request.";
+                    return View("info");
+                }
+                return View(model);
+            }
             return View(model);
         }
 
@@ -69,7 +170,7 @@ namespace DMS.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            
+
             //Create Basic Two Roles when firsts setup
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
             var rolesToBeCreated = new List<string> { "Administrator", "User" };
@@ -83,8 +184,9 @@ namespace DMS.Controllers
                     ViewBag.Role = "Quick Installation: First Time Role Created";
                 }
 
-            }                  
-
+            }
+            CommonManager cmn = new CommonManager();
+            ViewBag.CountryList = cmn.GetCountryList();
             return View();
         }
 
@@ -93,27 +195,80 @@ namespace DMS.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CaptchaValidator(
+           PrivateKey = "6LdixBoUAAAAAA0XRMcBi2JBOvLqVQZyDwI_9Nyl",
+           ErrorMessage = "Invalid input captcha.",
+           RequiredMessage = "The captcha field is required.")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Address= model.Address, Email= model.Address, Phone= model.Phone, NID= model.NID, Gender=model.Gender };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                UserManager.AddToRole(user.Id, "User");
-                if (result.Succeeded)
+
+
+                var user = new ApplicationUser() { UserName = model.UserName, Address = model.Address, Email = model.Email, Phone = model.Phone, NID = model.NID, Gender = model.Gender, FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth };
+                try
                 {
-                    await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+
+                    if (UserManager.FindByName(model.UserName) == null)
+                    {
+                        if (UserManager.FindByEmail(model.Email) == null)
+                        {
+                            var result = await UserManager.CreateAsync(user, model.Password);
+                            UserManager.AddToRole(user.Id, "User");
+                            if (result.Succeeded)
+                            {
+                                //await SignInAsync(user, isPersistent: false);                               
+                                //return RedirectToAction("Login", "Account");
+                                var provider = new DpapiDataProtectionProvider("DMS");
+
+
+                                UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(
+                                    provider.Create("EmailConfirmation"));
+
+                                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                                var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                                   new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                                //await UserManager.SendEmailAsync(user.Id,
+                                //   "Confirm your account", "Please confirm your account by clicking <a href=\""
+                                //   + callbackUrl + "\">here</a>");
+
+                                string body = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
+                                EmailManager emm = new EmailManager();
+                                bool isMailSend = await emm.EmailSend(body, user.Email);
+                                ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
+                                                + "before you can log in.";
+                                return View("Info");
+                                //return RedirectToAction("Index", "Home");
+                            }
+
+                            else
+                            {
+                                AddErrors(result);
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.validationerror = "Hmm...Email already taken!";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.validationerror = "Hmm...Wrong user id!";
+                    }
                 }
-                else
+                catch
                 {
-                    AddErrors(result);
+                    ViewBag.validationerror = "Hmm...Something went wrong! Please fill the form properly!";
                 }
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        
 
         //
         // POST: /Account/Disassociate
@@ -199,6 +354,61 @@ namespace DMS.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            try
+            {
+                var provider = new DpapiDataProtectionProvider("DMS");
+                UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(
+                    provider.Create("EmailConfirmation"));
+                if (userId == null || code == null)
+                {
+                    return View("Error");
+                }
+                var result = await UserManager.ConfirmEmailAsync(userId, code);
+                if (result.Succeeded)
+                {
+                    return View("ConfirmEmail");
+                }
+                AddErrors(result);
+                return View();
+            }
+            catch
+            {
+                return View("Error");
+            }
+        }
+
+        // GET: /Account/Profile
+        public ActionResult Profile()
+        {            
+            UserManagementManager umm = new UserManagementManager();
+            UserManagementViewModel uvv = umm.SelectUserDetails(User.Identity.GetUserId());
+            if (uvv == null)
+            {
+                return HttpNotFound();
+            }
+            string sqlFormattedDate = uvv.DateOfBirth.HasValue ? uvv.DateOfBirth.Value.ToString("yyyy-MM-dd") : "";
+            ViewBag.FormattedDate = sqlFormattedDate;
+            return View(uvv);
+            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]        
+        public ActionResult Profile([Bind(Include = "Id,UserName,FirstName,LastName,Gender,Email,Address,Phone,NID,DateOfBirth")] UserManagementViewModel umViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                UserManagementManager um = new UserManagementManager();
+                um.UpdateUserAccount(umViewModel);
+                return RedirectToAction("Profile");
+            }
+            return View("~/Views/Admin/Role/Edit.cshtml", umViewModel);
+        }
+
+
 
         //
         // POST: /Account/ExternalLogin
@@ -398,7 +608,8 @@ namespace DMS.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 

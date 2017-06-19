@@ -1,0 +1,88 @@
+﻿@model DataModel.Models.ViewModel.UserManagementViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+@Html.Partial("_Sidebar")
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="page-content">
+
+            <h2>Details</h2>
+
+            <div>
+                <h4>UserManagementViewModel</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.UserName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayName("Name")
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Gender)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Phone)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.NID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.NID)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Rolelist)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Rolelist)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
+    </div>
+
+</div>

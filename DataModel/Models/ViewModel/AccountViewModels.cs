@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DMS.Models.ViewModel
@@ -46,8 +47,17 @@ namespace DMS.Models.ViewModel
 
     public class RegisterViewModel
     {
+
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "User Name/Id")]
         public string UserName { get; set; }
 
         [Required]
@@ -67,6 +77,7 @@ namespace DMS.Models.ViewModel
 
         [Required]
         [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required]
@@ -86,6 +97,41 @@ namespace DMS.Models.ViewModel
         [Display(Name = "Assigned Role")]
         public string Role { get; set; }
 
+        [Required]
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+
+        [Required]
+        [Display(Name = "Date of birth")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? DateOfBirth { get; set; }
+
+
+        
+
     }
+
+    public class ResetPasswordViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        public string Code { get; set; }
+        public string UserId { get; set; }
+    }
+    
     
 }

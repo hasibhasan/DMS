@@ -5952,7 +5952,7 @@ button.close {
   position: absolute;
   left: 15%;
   right: 15%;
-  bottom: 20px;
+  top: 100px;
   z-index: 10;
   padding-top: 20px;
   padding-bottom: 20px;

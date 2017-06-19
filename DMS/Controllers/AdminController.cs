@@ -16,7 +16,7 @@ namespace DMS.Controllers
 {
     [Authorize]
     public class AdminController : Controller
-    {
+    { 
               
         
         //

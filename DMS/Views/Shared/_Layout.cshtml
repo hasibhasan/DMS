@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>DData @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
 
     <!--[if lte IE 9]>
@@ -35,7 +35,7 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="navbar-header pull-left">
-                @Html.ActionLink("DMS", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("DMS", "Index", "Home", null, new { @class = "navbar-brand brandlogo" })
             </div>
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">
@@ -53,7 +53,7 @@
             <div class="footer-inner">
                 <div class="footer-content">
 
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                    <p>&copy; @DateTime.Now.Year - DData</p>
                 </div>
             </div>
         </footer>
@@ -68,7 +68,7 @@
     <!-- page specific plugin scripts -->
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/scripts")
+    @Scripts.Render("~/bundles/datatable-script")
     @RenderSection("scripts", required: false)
-
 </body>
 </html>

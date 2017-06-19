@@ -1,4 +1,5 @@
-﻿@model DMS.Models.ViewModel.RegisterViewModel
+﻿@using reCAPTCHA.MVC
+@model DMS.Models.ViewModel.RegisterViewModel
 @{
     ViewBag.Title = "Register";
 }
@@ -16,6 +17,17 @@
             <br>
         </div>
     }
+    @if (!String.IsNullOrEmpty(ViewBag.validationerror))
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+        <strong>Account Create Error!</strong> 
+        @ViewBag.validationerror
+        <br>
+    </div>
+}
 
     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
@@ -23,6 +35,15 @@
         <h4>Create a new account.</h4>
         <hr />
        // @Html.ValidationSummary()
+       <div class="form-group">
+           @Html.Label("Name", new { @class = "col-md-2 control-label" })           
+            <div class="col-md-2">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", required = "required", placeholder = "First Name" })
+            </div>
+           <div class="col-md-2">
+               @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", required = "required", placeholder = "Last Name" })
+           </div>
+        </div>       
         <div class="form-group">
             @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label"})
             <div class="col-md-4">
@@ -45,7 +66,7 @@
         <div class="form-group">
                  @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
                 <div class="col-md-4">                                       
-                   @Html.DropDownListFor(model => model.Gender, Enum.GetNames(typeof(DataModel.Enums.Gender)).Select(e => new SelectListItem { Text = e }), new { @class = "form-control" })
+                   @Html.DropDownListFor(model => model.Gender, Enum.GetNames(typeof(DataModel.Enums.Gender)).Select(e => new SelectListItem { Text = e }), "--Select Gender--", new { @class = "form-control" })
                 </div>
             </div>
         <div class="form-group">
@@ -72,6 +93,28 @@
                 @Html.TextBoxFor(m => m.NID, new { @class = "form-control" })
             </div>
         </div>
+        
+        <div class="form-group">
+                 @Html.LabelFor(m => m.Country, new { @class = "col-md-2 control-label" })
+                <div class="col-md-4">                                       
+                   @Html.DropDownListFor(model => model.Country, new SelectList(ViewBag.CountryList), "-- Select Country --", new { @class = "form-control" })
+                </div>
+            </div>
+        
+        <div class="form-group">    
+                @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-2 control-label" })         
+                <div class="col-md-4">                                                           
+                    @Html.HiddenFor(m => m.DateOfBirth, new { @id = "example" })
+                </div>
+            </div>
+        
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.Recaptcha()
+                @Html.ValidationMessage("ReCaptcha")
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-4">
                 <input type="submit" class="btn btn-default" value="Register" />
@@ -81,4 +124,13 @@
 </div>
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
+        <script>
+            $(document).ready(function ()
+            {
+                $("#example").dateDropdowns();
+            });
+                
+            
+            
+        </script>
     }

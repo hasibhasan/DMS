@@ -5,9 +5,23 @@
 }
 <div class="container">
     <h2>@ViewBag.Title.</h2>
+    
+    @if (!String.IsNullOrEmpty(ViewBag.errorMessage))
+    {
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            <strong>Account Login Error!</strong>
+            @ViewBag.errorMessage
+            <br>
+        </div>
+    }
+
+
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <section id="loginForm">
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
@@ -15,8 +29,8 @@
                     <h4>Use a local account to log in.</h4>
                     <hr />
                     <div class="row">
-                        <div class="pull-right">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danager" })
+                        <div>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danager alert alert-danger" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -35,11 +49,15 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <div class="checkbox">                                
+                            <div class="checkbox" style="margin-left:20px;">                                
                                 @Html.CheckBoxFor(m =>m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe, new { @Style="padding-left:2px;" })                                
+                                <a href="@Url.Action("ForgotPassword","Account")" class="pull-right">Forgotten Password?</a>                               
                             </div>
+                            
                         </div>
+                        
+
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
@@ -52,7 +70,7 @@
                 }
             </section>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-offset-2 col-md-4">
             <section id="socialLoginForm">
                 @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
             </section>

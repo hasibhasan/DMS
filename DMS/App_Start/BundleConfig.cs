@@ -33,8 +33,12 @@ namespace DMS
                        "~/Scripts/js/ace/elements.treeview.js", "~/Scripts/js/ace/elements.wizard.js", "~/Scripts/js/ace/elements.aside.js",
                        "~/Scripts/js/ace/ace.js", "~/Scripts/js/ace/ace.ajax-content.js", "~/Scripts/js/ace/ace.touch-drag.js", "~/Scripts/js/ace/ace.sidebar.js",
                        "~/Scripts/js/ace/ace.sidebar-scroll-1.js", "~/Scripts/js/ace/ace.submenu-hover.js", "~/Scripts/js/ace/ace.widget-box.js",
-                       "~/Scripts/js/ace/ace.settings.js", "~/Scripts/js/ace/ace.settings-rtl.js", "~/Scripts/js/ace/ace.widget-on-reload.js", "~/Scripts/js/ace/ace.searchbox-autocomplete.js"));
+                       "~/Scripts/js/ace/ace.settings.js", "~/Scripts/js/ace/ace.settings-rtl.js", "~/Scripts/js/ace/ace.widget-on-reload.js", "~/Scripts/js/ace/ace.searchbox-autocomplete.js", "~/Scripts/js/jquery.date-dropdowns.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/datatable-script").Include(
+                 "~/Scripts/js/dataTables/jquery.dataTables.js","~/Scripts/js/dataTables/jquery.dataTables.bootstrap.js", 
+                    "~/Scripts/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js","~/Scripts/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"
+                 ));            
         }
     }
 }

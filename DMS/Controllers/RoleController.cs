@@ -9,13 +9,14 @@ using System.Web.Mvc;
 
 namespace DMS.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            AdminManager adm = new AdminManager();
-            return View("~/Views/Admin/Role/Index.cshtml", adm.GetAllRole());
+            RoleManager rm = new RoleManager();
+            return View("~/Views/Admin/Role/Index.cshtml", rm.GetAllRole());
         }
         [Authorize(Roles = "Administrator")]
         public ActionResult Details(string id)
@@ -25,8 +26,8 @@ namespace DMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            AdminManager adm = new AdminManager();
-            RoleViewModel role = adm.SelectRole(id);
+            RoleManager rm = new RoleManager();
+            RoleViewModel role = rm.SelectRole(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -52,9 +53,9 @@ namespace DMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                AdminManager adm = new AdminManager();
+                RoleManager rm = new RoleManager();
 
-                if (adm.CreateRole(roleViewModel))
+                if (rm.CreateRole(roleViewModel))
                 {
                     return RedirectToAction("Index");
                 }
@@ -72,8 +73,8 @@ namespace DMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AdminManager adm = new AdminManager();
-            RoleViewModel role = adm.SelectRole(id);
+            RoleManager rm = new RoleManager();
+            RoleViewModel role = rm.SelectRole(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -91,8 +92,8 @@ namespace DMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                AdminManager adm = new AdminManager();
-                adm.UpdateRole(roleViewModel);
+                RoleManager rm = new RoleManager();
+                rm.UpdateRole(roleViewModel);
                 return RedirectToAction("Index");
             }
             return View("~/Views/Admin/Role/Edit.cshtml", roleViewModel);
@@ -106,8 +107,8 @@ namespace DMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AdminManager adm = new AdminManager();
-            RoleViewModel role = adm.SelectRole(id);
+            RoleManager rm = new RoleManager();
+            RoleViewModel role = rm.SelectRole(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -121,15 +122,15 @@ namespace DMS.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(string id)
         {
-            AdminManager adm = new AdminManager();
-            adm.RoleDelete(id);
+            RoleManager rm = new RoleManager();
+            rm.RoleDelete(id);
             return RedirectToAction("Index");
         }        
 
         protected override void Dispose(bool disposing)
         {
-            AdminManager adm = new AdminManager();
-            adm.Dispose();
+            RoleManager rm = new RoleManager();
+            rm.Dispose();
             base.Dispose(disposing);
         }
     }

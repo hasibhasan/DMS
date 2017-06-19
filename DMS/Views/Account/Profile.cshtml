@@ -1,0 +1,210 @@
+﻿@model DataModel.Models.ViewModel.UserManagementViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+@Html.Partial("_Sidebar")
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="page-content">
+            <h2>Profile</h2>
+            <div class="row" id="user-profile-3">
+                <div class="col-md-3">                       
+                    <input type="file" id="profile-avatar"/> 
+                    <a href="#" id="btnUpload" class="btn btn-sm btn-block btn-primary">
+                        <i class="ace-icon fa fa-floppy-o bigger-110"></i>
+                        <span class="bigger-110">Save</span>
+                    </a>                                      
+                </div><!-- /.col -->
+                <div class="vspace-12-sm"></div>
+                <div class="col-md-9">
+                    <img src=@Model.ImagePath class="img-circle img-responsive" style="width:200px;" />
+                    @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <h4>Profile Details</h4>
+                            <hr />
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.UserName, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.UserName)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FirstName, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.FirstName)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.LastName, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.LastName)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Gender, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.Gender, Enum.GetNames(typeof(DataModel.Enums.Gender)).Select(e => new SelectListItem { Text = e }), "--Select Gender--", new { @class = "form-control", @style = "width:170px;" })
+                                    @Html.ValidationMessageFor(model => model.Gender)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Email)
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Address)
+                                    @Html.ValidationMessageFor(model => model.Address)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Phone)
+                                    @Html.ValidationMessageFor(model => model.Phone)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NID, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.NID)
+                                    @Html.ValidationMessageFor(model => model.NID)
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                            @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.DateOfBirth)
+                                @Html.ValidationMessageFor(model => model.DateOfBirth)
+                            </div>
+                        </div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.HiddenFor(m => m.DateOfBirth, new { @id = "example" })
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div>
+                        @Html.ActionLink("Back to List", "Index")
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+        $("#example").dateDropdowns({
+            defaultDate: '@ViewBag.FormattedDate'
+        });
+
+            $('#btnUpload').click(function () {                
+                // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#profile-avatar").get(0);
+                    var files = fileUpload.files;
+                    // Create FormData object
+                    var fileData = new FormData();
+                    // Looping over all files and add it to FormData object
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    $.ajax({
+                        url: '/UserManagement/UploadAvatar',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                } else {
+                    alert("FormData is not supported.");
+                }
+            });
+
+
+        $('#user-profile-3')
+        .find('input[type=file]').ace_file_input({
+            style: 'well',
+            btn_choose: 'Change avatar',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-picture-o',
+            thumbnail: 'large',
+            droppable: true,
+            allowExt: ['jpg', 'jpeg', 'png', 'gif'],
+            allowMime: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
+        })
+        .end().find('button[type=reset]').on(ace.click_event, function () {
+            $('#user-profile-3 input[type=file]').ace_file_input('reset_input');
+        });
+       
+
+
+        //change profile
+        $('[data-toggle="buttons"] .btn').on('click', function (e) {
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            $('.user-profile').parent().addClass('hide');
+            $('#user-profile-' + which).parent().removeClass('hide');
+        });
+
+       
+
+       
+
+
+
+
+    });
+
+
+
+
+</script>
+
+}

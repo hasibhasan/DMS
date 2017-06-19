@@ -12,9 +12,16 @@ namespace DataModel.Models.ViewModel
         [Key]
         public string Id { get; set; }
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "User Id")]
         public string UserName { get; set; }
 
+        [Required]
+        [Display(Name = "First name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
 
         [Required]
         [Display(Name = "Gender")]
@@ -28,17 +35,31 @@ namespace DataModel.Models.ViewModel
         [Display(Name = "Address")]
         public string Address { get; set; }
 
-
         [Required]
         [Display(Name = "Phone")]
         public string Phone { get; set; }
 
-
         [Display(Name = "NID")]
         public string NID { get; set; }
 
+        [Display(Name = "DateOfBirth")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? DateOfBirth { get; set; }
+
         [Display(Name = "Assigned Role")]
         public IList<string> Rolelist { get; set; }
+
+        [Display(Name = "IsAproved")]
+        public bool IsAproved { get; set; }
+
+        [Display(Name = "IsLocked")]
+        public bool IsLocked { get; set; }
+
+        [Display(Name = "Select Image")]
+        public string ImagePath { get; set; }
+
+
+
     }
    
 }

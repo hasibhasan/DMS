@@ -1124,7 +1124,8 @@ pre.prettyprint {
   -webkit-box-shadow: none;
   box-shadow: none;
   min-height: 45px;
-  background: #438eb9;
+  /*background: #438eb9;*/
+  background:rgba(0, 0, 0, 0) linear-gradient(154deg, #008fe2 0px, #00b29c 100%) repeat scroll 0 0;
 }
 .navbar .navbar-text,
 .navbar .navbar-link {
@@ -1168,7 +1169,7 @@ pre.prettyprint {
 .ace-nav > li {
   line-height: 45px;
   height: 45px;
-  border-left: 1px solid #E1E1E1;
+  border-left: 1px solid #3d82a9;
   padding: 0;
   position: relative;
   float: left;
@@ -1178,7 +1179,7 @@ pre.prettyprint {
 }
 .ace-nav > li > a {
   /*background-color: #2e6589;*/
-  color: #FFF;
+  color: #134663;
   display: block;
   line-height: inherit;
   text-align: center;
@@ -19912,4 +19913,11 @@ padding-bottom: 4px;
 margin-bottom: 1px;
 margin-top: 1px;
 }
-
+.brandlogo
+{
+    
+     width:120px;     
+     background: url(LogoDdata.png) no-repeat center left;     
+     background-size: 120px;
+     text-indent: -9999px; /* hides the link text */
+}

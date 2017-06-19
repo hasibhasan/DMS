@@ -113,6 +113,10 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="reCAPTCHA.MVC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\reCAPTCH.MVC.1.0.1\lib\net45\reCAPTCHA.MVC.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -186,6 +190,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -294,6 +299,7 @@
     <Content Include="Content\images\gallery\thumb-4.jpg" />
     <Content Include="Content\images\gallery\thumb-5.jpg" />
     <Content Include="Content\images\gallery\thumb-6.jpg" />
+    <Content Include="Content\css\LogoDdata.png" />
     <Content Include="Content\images\sort_asc.png" />
     <Content Include="Content\images\sort_asc_disabled.png" />
     <Content Include="Content\images\sort_both.png" />
@@ -438,6 +444,7 @@
     <Content Include="Scripts\js\jquery.autosize.js" />
     <Content Include="Scripts\js\jquery.bootstrap-duallistbox.js" />
     <Content Include="Scripts\js\jquery.colorbox.js" />
+    <Content Include="Scripts\js\jquery.date-dropdowns.js" />
     <Content Include="Scripts\js\jquery.easypiechart.js" />
     <Content Include="Scripts\js\jquery.gritter.js" />
     <Content Include="Scripts\js\jquery.hotkeys.js" />
@@ -690,10 +697,17 @@
     <Content Include="Views\Admin\Role\Details.cshtml" />
     <Content Include="Views\Admin\Role\Edit.cshtml" />
     <Content Include="Views\Admin\Role\Index.cshtml" />
-    <Content Include="Views\UserManagement\Index.cshtml" />
+    <Content Include="Views\Admin\UserManagement\Index.cshtml" />
+    <Content Include="Views\Admin\UserManagement\Details.cshtml" />
+    <Content Include="Views\Account\Info.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
