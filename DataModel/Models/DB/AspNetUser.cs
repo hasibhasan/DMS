@@ -41,6 +41,7 @@ namespace DataModel.Models.DB
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public string ImagePath { get; set; }
     
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }

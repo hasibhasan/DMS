@@ -15,6 +15,24 @@ namespace DataModel.Models.EntityManager
 {
     public class AdminManager
     {
+        private DDataEntities db = new DDataEntities();
+
+        public List<BeneficiaryDetail> GetBenDetails()
+        {
+
+            try
+            {
+                var benDetails = db.BeneficiaryDetails.Take(1000).ToList();
+                return benDetails;
+            }
+            catch
+            {
+                return null;
+            }
+
+
+
+        }
 
     }
 }

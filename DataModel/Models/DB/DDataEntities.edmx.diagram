@@ -19,6 +19,7 @@
         <AssociationConnector Association="DDataModel.FK_PermissionRoles_Permissions" ManuallyRouted="false" />
         <AssociationConnector Association="DDataModel.FK_PermissionUser_Permissions" ManuallyRouted="false" />
         <AssociationConnector Association="DDataModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DDataModel.BeneficiaryDetail" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

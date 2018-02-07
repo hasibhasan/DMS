@@ -1,4 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
+@{
+  
+}
 @if (Request.IsAuthenticated)
 {
         if(User.IsInRole("Administrator"))
@@ -12,7 +15,7 @@
         
         <li>
             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                <img class="nav-user-photo" src="~/Content/avatars/user.jpg" alt="Jason's Photo" />
+                @*<img class="nav-user-photo" src="~/Content/avatars/user.jpg" alt="Jason's Photo" />*@
                 <span class="user-info">
                     <small>Welcome,</small>
                     @User.Identity.GetUserName()
@@ -24,7 +27,7 @@
             <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 
                 <li>
-                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    @Html.ActionLink("Hello " +User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
 
                 </li>
 

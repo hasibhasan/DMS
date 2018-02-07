@@ -10,12 +10,26 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using DMS.Models.ViewModel;
+using DataModel.Models.DB;
 
 namespace DMS.Controllers
 {
     [Authorize]
     public class UserManagementController : Controller
     {
+
+         private ApplicationDbContext context = new ApplicationDbContext();
+        public UserManagementController()
+            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        {
+        }
+        public UserManagementController(UserManager<ApplicationUser> userManager)
+        {
+            UserManager = userManager;
+        }
+        public UserManager<ApplicationUser> UserManager { get; private set; }
+
         //
         // GET: /UserManagement/
         public ActionResult Index()
@@ -43,11 +57,15 @@ namespace DMS.Controllers
             return View("~/Views/Admin/UserManagement/Details.cshtml", uvv);
         }
 
+        [Authorize(Roles = "Administrator")]
         //
         // GET: /UserManagement/Create
         public ActionResult Create()
         {
-            return View();
+
+            RoleManager rm = new RoleManager();
+            ViewBag.rolelist = rm.GetOnlyRoleList();            
+            return View("~/Views/Admin/UserManagement/Create.cshtml");
         }
 
         //
@@ -66,6 +84,69 @@ namespace DMS.Controllers
                 return View();
             }
         }
+
+        //
+        // POST: /UserManagement/Register
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]        
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+                var user = new ApplicationUser() { UserName = model.UserName, Address = model.Address, Email = model.Email, Phone = model.Phone, NID = model.NID, Gender = model.Gender, FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth  };
+                try
+                {
+
+                    if (UserManager.FindByName(model.UserName) == null)
+                    {
+                        if (UserManager.FindByEmail(model.Email) == null)
+                        {
+                            user.EmailConfirmed = true;
+                            var result = await UserManager.CreateAsync(user, model.Password);
+                            UserManager.AddToRole(user.Id, model.Role);
+                            
+                            if (result.Succeeded)
+                            {
+                                return View("~/Views/Admin/UserManagement/Index.cshtml");
+                                //return RedirectToAction("Index", "Home");
+                            }
+
+                            else
+                            {
+                                AddErrors(result);
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.validationerror = "Hmm...Email already taken!";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.validationerror = "Hmm...Wrong user id!";
+                    }
+                }
+                catch
+                {
+                    ViewBag.validationerror = "Hmm...Something went wrong! Please fill the form properly!";
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
     
         //
         // GET: /UserManagement/Edit/5
@@ -210,7 +291,21 @@ namespace DMS.Controllers
             {
                 return Json("No files selected.");
             }
-        }  
+        }
+               
+        public string GetAvatar()
+        {
+
+            UserManagementManager umm = new UserManagementManager();
+            String imagePath = umm.GetAvatar(User.Identity.GetUserId());
+            if (imagePath == null)
+            {
+                imagePath = "";   
+            }
+            return imagePath;
+        }
+
+
 
 
 

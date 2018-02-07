@@ -100,6 +100,9 @@
     <Compile Include="Models\DB\AspNetUserLogin.cs">
       <DependentUpon>DDataEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DB\BeneficiaryDetail.cs">
+      <DependentUpon>DDataEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DB\DDataEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -136,7 +139,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <EntityDeploy Include="Models\DB\DDataEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DDataEntities.Designer.cs</LastGenOutput>

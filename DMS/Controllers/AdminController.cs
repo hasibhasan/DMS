@@ -24,8 +24,9 @@ namespace DMS.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-               
-            return View();
+            AdminManager adm = new AdminManager();
+            var BenDetails = adm.GetBenDetails();
+            return View(BenDetails);
         }       
 
         public ActionResult Admins()

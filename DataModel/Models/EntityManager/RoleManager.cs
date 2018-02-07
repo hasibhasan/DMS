@@ -35,6 +35,18 @@ namespace DataModel.Models.EntityManager
 
 
         }
+        public List<string> GetOnlyRoleList()
+        {
+            try
+            {
+                var roles = db.AspNetRoles.Select(x => x.Name).ToList();
+                return roles;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         public RoleViewModel SelectRole(string id)
         {

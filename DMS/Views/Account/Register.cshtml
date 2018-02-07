@@ -66,7 +66,7 @@
         <div class="form-group">
                  @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
                 <div class="col-md-4">                                       
-                   @Html.DropDownListFor(model => model.Gender, Enum.GetNames(typeof(DataModel.Enums.Gender)).Select(e => new SelectListItem { Text = e }), "--Select Gender--", new { @class = "form-control" })
+                   @Html.DropDownListFor(m => m.Gender, Enum.GetNames(typeof(DataModel.Enums.Gender)).Select(e => new SelectListItem { Text = e }), "--Select Gender--", new { @class = "form-control" })
                 </div>
             </div>
         <div class="form-group">
@@ -90,21 +90,21 @@
         <div class="form-group">
             @Html.LabelFor(m => m.NID, new { @class = "col-md-2 control-label" })
             <div class="col-md-4">
-                @Html.TextBoxFor(m => m.NID, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.NID, new { @class = "form-control", required = "required" })
             </div>
         </div>
         
-        <div class="form-group">
+        @*<div class="form-group">
                  @Html.LabelFor(m => m.Country, new { @class = "col-md-2 control-label" })
                 <div class="col-md-4">                                       
-                   @Html.DropDownListFor(model => model.Country, new SelectList(ViewBag.CountryList), "-- Select Country --", new { @class = "form-control" })
+                   @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.CountryList), "-- Select Country --", new { @class = "form-control" })
                 </div>
-            </div>
+            </div>*@
         
         <div class="form-group">    
                 @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-2 control-label" })         
                 <div class="col-md-4">                                                           
-                    @Html.HiddenFor(m => m.DateOfBirth, new { @id = "example" })
+                    @Html.HiddenFor(m => m.DateOfBirth, new { @id = "example", required = "required" })
                 </div>
             </div>
         

@@ -62,6 +62,26 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="DateOfBirth" Type="date" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="BeneficiaryDetails">
+          <Key>
+            <PropertyRef Name="Rid" />
+          </Key>
+          <Property Name="Rid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BeneficiaryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="YearId" Type="int" Nullable="false" />
+          <Property Name="Occupation" Type="int" Nullable="false" />
+          <Property Name="OccupationDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TotalLandinDecimal" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="YearlyIncome" Type="money" />
+          <Property Name="FamilyMember" Type="tinyint" />
+          <Property Name="FamilyEarningMember" Type="tinyint" />
+          <Property Name="IsVGDBenefitted" Type="bit" />
+          <Property Name="VictimByDisaster" Type="int" />
+          <Property Name="GetSupportFrom" Type="int" />
+          <Property Name="GovtSupport" Type="int" />
+          <Property Name="TotalMarks" Type="decimal" Precision="6" Scale="2" />
         </EntityType>
         <EntityType Name="PermissionRoles">
           <Key>
@@ -206,6 +226,7 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BeneficiaryDetails" EntityType="Self.BeneficiaryDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PermissionRoles" EntityType="Self.PermissionRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PermissionUser" EntityType="Self.PermissionUser" Schema="dbo" store:Type="Tables" />
@@ -303,6 +324,7 @@
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PermissionRole">
           <Key>
@@ -459,7 +481,27 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="BeneficiaryDetails" EntityType="DDataModel.BeneficiaryDetail" />
         </EntityContainer>
+        <EntityType Name="BeneficiaryDetail">
+          <Key>
+            <PropertyRef Name="Rid" />
+          </Key>
+          <Property Name="Rid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BeneficiaryId" Type="Guid" Nullable="false" />
+          <Property Name="YearId" Type="Int32" Nullable="false" />
+          <Property Name="Occupation" Type="Int32" Nullable="false" />
+          <Property Name="OccupationDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalLandinDecimal" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
+          <Property Name="YearlyIncome" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FamilyMember" Type="Byte" />
+          <Property Name="FamilyEarningMember" Type="Byte" />
+          <Property Name="IsVGDBenefitted" Type="Boolean" />
+          <Property Name="VictimByDisaster" Type="Int32" />
+          <Property Name="GetSupportFrom" Type="Int32" />
+          <Property Name="GovtSupport" Type="Int32" />
+          <Property Name="TotalMarks" Type="Decimal" Precision="6" Scale="2" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -496,6 +538,7 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="DDataModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -562,6 +605,26 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="BeneficiaryDetails">
+            <EntityTypeMapping TypeName="DDataModel.BeneficiaryDetail">
+              <MappingFragment StoreEntitySet="BeneficiaryDetails">
+                <ScalarProperty Name="TotalMarks" ColumnName="TotalMarks" />
+                <ScalarProperty Name="GovtSupport" ColumnName="GovtSupport" />
+                <ScalarProperty Name="GetSupportFrom" ColumnName="GetSupportFrom" />
+                <ScalarProperty Name="VictimByDisaster" ColumnName="VictimByDisaster" />
+                <ScalarProperty Name="IsVGDBenefitted" ColumnName="IsVGDBenefitted" />
+                <ScalarProperty Name="FamilyEarningMember" ColumnName="FamilyEarningMember" />
+                <ScalarProperty Name="FamilyMember" ColumnName="FamilyMember" />
+                <ScalarProperty Name="YearlyIncome" ColumnName="YearlyIncome" />
+                <ScalarProperty Name="TotalLandinDecimal" ColumnName="TotalLandinDecimal" />
+                <ScalarProperty Name="OccupationDescription" ColumnName="OccupationDescription" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="YearId" ColumnName="YearId" />
+                <ScalarProperty Name="BeneficiaryId" ColumnName="BeneficiaryId" />
+                <ScalarProperty Name="Rid" ColumnName="Rid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

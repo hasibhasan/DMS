@@ -14,7 +14,7 @@ namespace DataModel.Models.ViewModel
         public string Id { get; set; }
 
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Role Name")]
         public string Name { get; set; }
     }
 

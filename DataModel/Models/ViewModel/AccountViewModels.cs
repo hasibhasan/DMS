@@ -97,7 +97,7 @@ namespace DMS.Models.ViewModel
         [Display(Name = "Assigned Role")]
         public string Role { get; set; }
 
-        [Required]
+        
         [Display(Name = "Country")]
         public string Country { get; set; }
 

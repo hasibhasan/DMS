@@ -1,0 +1,136 @@
+﻿@model DMS.Models.ViewModel.RegisterViewModel
+@Html.Partial("_Sidebar")
+@{
+    ViewBag.Title = "Create";
+}
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="page-content">
+
+            <h2>Create</h2>
+            @if (!String.IsNullOrEmpty(ViewBag.validationerror))
+            {
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+                    <strong>Account Create Error!</strong>
+                    @ViewBag.validationerror
+                    <br>
+                </div>
+            }
+            @using (Html.BeginForm("Register", "UserManagement", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Create a new account.</h4>
+                <hr />
+                // @Html.ValidationSummary()
+                <div class="form-group">
+                    @Html.Label("Name", new { @class = "col-md-2 control-label" })
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", required = "required", placeholder = "First Name" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", required = "required", placeholder = "Last Name" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => m.Gender, Enum.GetNames(typeof(DataModel.Enums.Gender)).Select(e => new SelectListItem { Text = e }), "--Select Gender--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NID, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(m => m.NID, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.HiddenFor(m => m.DateOfBirth, new { @id = "example", required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => m.Role, new SelectList(ViewBag.rolelist), new { @class = "form-control" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-4">
+                        <input type="submit" class="btn btn-default" value="Register" />
+                    </div>
+                </div>
+            }
+
+
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#example").dateDropdowns();
+        });
+
+
+
+    </script>
+}
+
+
+
+

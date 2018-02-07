@@ -85,6 +85,13 @@ namespace DataModel.Models.EntityManager
 
           }
 
+          public String GetAvatar(string id)
+          {
+              var item = context.Users.Find(id);
+              return item.ImagePath;
+          }  
+
+
           public bool UpdateUserAccount(UserManagementViewModel umViewModel)
           {
 

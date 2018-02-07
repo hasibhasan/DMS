@@ -58,6 +58,8 @@ namespace DataModel.Models.ViewModel
         [Display(Name = "Select Image")]
         public string ImagePath { get; set; }
 
+   
+
 
 
     }
