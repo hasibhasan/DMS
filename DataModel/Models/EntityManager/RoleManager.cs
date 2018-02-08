@@ -17,6 +17,7 @@ namespace DataModel.Models.EntityManager
 
         public List<RoleViewModel> GetAllRole()
         {
+            
 
             try
             {

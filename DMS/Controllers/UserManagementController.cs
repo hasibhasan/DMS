@@ -152,23 +152,35 @@ namespace DMS.Controllers
         // GET: /UserManagement/Edit/5
         public ActionResult Edit(string id)
         {
-            return View();
+            UserManagementManager umm = new UserManagementManager();
+            UserManagementViewModel uvv = umm.SelectUserDetails(id);
+            if (uvv == null)
+            {
+                return HttpNotFound();
+            }
+            string sqlFormattedDate = uvv.DateOfBirth.HasValue ? uvv.DateOfBirth.Value.ToString("yyyy-MM-dd") : "";
+            ViewBag.FormattedDate = sqlFormattedDate;
+            return View("~/Views/Admin/UserManagement/Edit.cshtml",uvv);
         }
 
         //
         // POST: /UserManagement/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, FormCollection collection)
+        public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,Gender,Email,Address,Phone,NID,DateOfBirth")] UserManagementViewModel umViewModel)
         {
             try
             {
-                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+                    UserManagementManager um = new UserManagementManager();
+                    um.UpdateUserAccount(umViewModel);
+                }
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View("~/Views/Admin/UserManagement/Index.cshtml");
             }
         }
 

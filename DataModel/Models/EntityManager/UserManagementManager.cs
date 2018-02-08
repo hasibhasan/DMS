@@ -58,6 +58,7 @@ namespace DataModel.Models.EntityManager
           }
           public UserManagementViewModel SelectUserDetails(string id)
           {
+              
 
               var item = context.Users.Find(id);
               var roles = UserManager.GetRoles(item.Id);
